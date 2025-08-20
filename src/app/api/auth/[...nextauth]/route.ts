@@ -1,11 +1,14 @@
 import prisma from "@/lib/client";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { RoleEnum } from "@/types/RoleEnum";
 
 const handler = NextAuth({
-    adapter: PrismaAdapter(prisma),
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 дней
+    },
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -26,7 +29,29 @@ const handler = NextAuth({
                 return null;
             },
         })
-    ]
+    ],
+    callbacks: {
+        async jwt({token, user}){
+            console.log("JWT callback", token, user);
+            if(user) {
+                token.id = user.id;
+                token.role = user.role || RoleEnum.WORKER;
+                token.login = user.login;
+                token.name = user.name;
+            }
+            return token;
+        },
+        async session({session, token}) {
+            console.log("Session callback", session, token);
+            if(token) {
+                session.user.name = token.name;
+                session.user.id = token.id;
+                session.user.role = token.role;
+                session.user.login = token.login;
+            }
+            return session;
+        }
+    }
 })
 
 export {handler as POST, handler as GET};
