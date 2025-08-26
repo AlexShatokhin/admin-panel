@@ -16,9 +16,8 @@ export function AppSidebar({name, role = RoleEnum.WORKER, loading} : {name: stri
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader>
-                <div className="border-b p-4 flex items-center gap-3">
-                    <div className="rounded-full border-2 p-2"><User /></div>
-                    {loading ? <Skeleton className="w-32 h-4 bg-foreground" /> : <span>Hello, <strong>{name}</strong></span>}
+                <div className="border-b px-2 flex items-center gap-2 h-22">
+                    {loading ? <Skeleton className="w-32 h-4 bg-foreground mx-auto"/> : <span className="text-lg block mx-auto">Hello, <strong>{name}</strong></span>}
                 </div>
             </SidebarHeader>
             <SidebarContent>
