@@ -24,6 +24,7 @@ model User {
   createdTasks Task[]   @relation("CreatedTasks")
   logs        ActionLog[]
   createdAt   DateTime  @default(now())
+  isActive    Boolean    @default(true)
 }
 
 model Task {
