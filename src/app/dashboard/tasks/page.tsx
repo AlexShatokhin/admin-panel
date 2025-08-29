@@ -1,9 +1,12 @@
+"use client";
 import React from 'react'
+import TaskForm from './task-form';
 
 export default function Tasks() {
-  return (
-    <>
-      <span>hello!</span>
-    </>
+  	return (
+	<>
+		<TaskForm />
+		<span>hello!</span>
+	</>
   )
 }
